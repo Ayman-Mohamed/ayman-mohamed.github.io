@@ -7,7 +7,7 @@
     {
       "root": "src",
       "outDir": "app",
-      "deployUrl" : "app",
+      "deployUrl" : "app/",
       "assets": [
         "assets",
         "favicon.ico"
