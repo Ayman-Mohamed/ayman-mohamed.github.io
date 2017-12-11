@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Chromosome } from '../data-models/chromosome';
+import { Chromosome } from '../data-models/index';
 import { RandomService } from '../../shared/services/random.service';
 import { DistanceService } from './distance.service';
 
@@ -7,6 +7,7 @@ import { DistanceService } from './distance.service';
 export class MutationService {
 
     private mutationRate: number = 0.05;
+    public count: number = 0;
 
     constructor(private rnd: RandomService, private distance: DistanceService) {
     }
@@ -20,8 +21,9 @@ export class MutationService {
     }
 
     public mutate(chromosome: Chromosome) {
-        if (this.rnd.next() < this.mutationRate) return;
+        if (this.rnd.next() > this.mutationRate) return;
 
+        this.count++;
         this.forceMutate(chromosome);
     }
 

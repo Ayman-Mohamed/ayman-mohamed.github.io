@@ -1,3 +1,23 @@
-<button class='btn btn-default btn-sm' (click)="start()">Run</button>
+<span>
+    <input type='submit' class='btn btn-success btn-sm' (click)="start()" [value]='isRunning ? "Stop" : "Run"'>
+
+    <span>{{currentGeneration}}</span>
+    <span>{{mutationCount}}</span>
+    <div class="row">
+
+        <div class="col-xs-2">
+            <label class='control-label' for="populationSize">Population Size</label>
+        </div>
+        <div class="col-xs-2">
+            <input class='form-control' type="number" name="populationSize" id="populationSize" [(ngModel)]='populationSize' [disabled]="isRunning">
+        </div>
+        <div class="col-xs-2">
+            <label class='control-label' for="numberOfCities">Number of Cities</label>
+        </div>
+        <div class="col-xs-2">
+            <input class='form-control' type="number" name="numberOfCities" id="numberOfCities" [(ngModel)]='numberOfCities' [disabled]="isRunning">
+        </div>
+    </div>
+</span>
 <br>
 <enhanced-canvas id='tspcanvas' [width]='width' [height]='height'></enhanced-canvas>

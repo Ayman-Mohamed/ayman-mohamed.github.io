@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { TSPGAMainComponent } from './components/tspgamain.component';
 import { TSPGARouting } from './tsp-with-genetic-algo.routes';
-import { RouterModule } from '@angular/router';
-import { TSPGAService } from './services/tsp-ga.service';
 import { SharedModule } from '../shared/shared.module';
 import { LinkedListService } from './services/linkedlist.data-structure';
 import { MutationService } from './services/mutation.service';
@@ -12,13 +12,14 @@ import { CrossOverService } from './services/crossover.service';
 import { FitnessService } from './services/fitness.service';
 import { DistanceService } from './services/distance.service';
 import { RandomService } from '../shared/services/random.service';
-import { RouletteService } from './services/roulette.service';
+import { SelectionService } from './services/selection.service';
 import { UtilityService } from './services/utility.service';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
+        FormsModule,
         SharedModule,
 
         TSPGARouting
@@ -27,12 +28,11 @@ import { UtilityService } from './services/utility.service';
         TSPGAMainComponent
     ],
     providers: [
-        TSPGAService,
         LinkedListService,
         MutationService,
         CrossOverService,
         FitnessService,
-        RouletteService,
+        SelectionService,
         DistanceService,
         UtilityService,
         {

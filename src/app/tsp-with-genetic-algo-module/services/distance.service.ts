@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { City } from '../data-models/city';
-import { IndexOutOfBoundsError } from '../../shared/errors/index-out-of-bounds';
+import { City } from '../data-models/index';
+import { IndexOutOfBoundsError } from '../../shared/errors/index';
 
 @Injectable()
 export class DistanceService {
 
     private distanceTable: number[][];
     private numberOfCities: number;
+    private _maxDistance: number;
 
     constructor() {
         this.distanceTable = [];
@@ -17,14 +18,24 @@ export class DistanceService {
 
         this.numberOfCities = n;
         this.distanceTable = [];
-        
+        let alldistances = [];
+
         for (let i = 0; i < n; i++) {
             this.distanceTable.push([]);
             for (let j = 0; j < n; j++) {
-                this.distanceTable[i].push(this.cityDistance(cities[i], cities[j]));
+                let d = this.cityDistance(cities[i], cities[j]);
+                this.distanceTable[i].push(d);
+                alldistances.push(d);
             }
         }
 
+        alldistances.sort((a, b) => b - a);
+        this._maxDistance = alldistances.slice(0, n + 1).reduce((a, b) => a + b, 0) + 1000;
+        }
+
+
+    public get MaxDistance(): number {
+        return this._maxDistance;
     }
 
     public distanceByIndex(indexA: number, indexB: number): number {

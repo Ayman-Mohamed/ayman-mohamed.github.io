@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NotImplementedError } from '../../errors/NotImplementedError';
+import { NotImplementedError } from '../../errors/index';
 
 @Component({
     selector: 'enhanced-canvas',
     templateUrl: 'enhanced-canvas.component.html',
-    styles : [
+    styles: [
         `
         canvas {
             border : 1px solid #ccc;
@@ -39,15 +39,9 @@ export class EnhancedCanvasComponent implements OnInit {
     }
 
     circle(x, y, r) {
+        this.ctx.strokeStyle = 'green';
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, 0, 2 * Math.PI);
-        this.ctx.stroke();
-    }
-
-    line(x1, y1, x2, y2) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(50, 50);
-        this.ctx.lineTo(100, 100);
         this.ctx.stroke();
     }
 
@@ -66,6 +60,7 @@ export class EnhancedCanvasComponent implements OnInit {
             // this.text(cities[order[i]].x, cities[order[i]].y, i, order[i]);
         }
 
+        this.ctx.strokeStyle = 'blue';
         this.ctx.beginPath();
         this.ctx.moveTo(cities[order[0]].x, cities[order[0]].y);
 

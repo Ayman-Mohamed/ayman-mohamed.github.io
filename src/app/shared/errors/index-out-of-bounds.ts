@@ -1,5 +1,8 @@
 export class IndexOutOfBoundsError extends Error {
-    constructor(message: string) {
-        super(message);
+    public name : string;
+    constructor(message = "", ...arg) {
+        super('IndexOutOfBoundsError: ' + message, ...arg);
+
+        this.name = 'IndexOutOfBoundsError';
     }
 }

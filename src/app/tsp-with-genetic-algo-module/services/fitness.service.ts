@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Chromosome } from '../data-models/chromosome';
+import { Chromosome } from '../data-models/index';
 import { DistanceService } from './distance.service';
 
 @Injectable()
@@ -15,6 +15,6 @@ export class FitnessService {
             score += this.distance.distanceByIndex(chromosome.genes[i].value, chromosome.genes[j].value);
         }
 
-        return 100000 - score;
-    };
+        return 1 - (score / this.distance.MaxDistance);
+    }
 }
