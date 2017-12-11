@@ -21,7 +21,7 @@ export class MutationService {
 
     public mutate(chromosome: Chromosome) {
         if (this.rnd.next() < this.mutationRate) return;
-        
+
         this.forceMutate(chromosome);
     }
 
@@ -67,19 +67,23 @@ export class MutationService {
         let order = chromosome.genes;
         let n = chromosome.length;
 
-        for (let i = 0; i < n - 1; i++) {
-            let a = 0;
-            if (i > 0) a += this.distance.distanceByIndex(order[i - 1].value, order[i].value);
-            if (i + 2 < n) a += this.distance.distanceByIndex(order[i + 1].value, order[i + 2].value);
+        for (let i = 0; i < n; i++) {
+            let i1 = (i + 1) % n;
+            let i2 = (i + 2) % n;
+            let i3 = (i + 3) % n;
 
-            chromosome.swap(i, i + 1);
+            let a = 0;
+            a += this.distance.distanceByIndex(order[i].value, order[i1].value);
+            a += this.distance.distanceByIndex(order[i2].value, order[i3].value);
+
+            chromosome.swap(i1, i2);
 
             let b = 0;
-            if (i > 0) b += this.distance.distanceByIndex(order[i - 1].value, order[i].value);
-            if (i + 2 < n) b += this.distance.distanceByIndex(order[i + 1].value, order[i + 2].value);
+            b += this.distance.distanceByIndex(order[i].value, order[i1].value);
+            b += this.distance.distanceByIndex(order[i2].value, order[i3].value);
 
             if (b > a) {
-                chromosome.swap(i, i + 1);
+                chromosome.swap(i1, i2);
             }
         }
     }

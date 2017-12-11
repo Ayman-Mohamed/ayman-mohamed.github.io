@@ -12,6 +12,8 @@ export class TSPGAService {
         private fitness: FitnessService,
         private crossOver: CrossOverService,
         private mutation: MutationService) {
+
+            this.mutation.setMutationRate(0.2);
     }
 
     public calculateFitness(chromosome: Chromosome) {

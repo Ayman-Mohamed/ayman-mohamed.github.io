@@ -1,4 +1,4 @@
 export let TSPGAConfiguration = {
-    populationSize: 100,
-    numberOfCities : 200
+    populationSize: 200,
+    numberOfCities : 100
 }

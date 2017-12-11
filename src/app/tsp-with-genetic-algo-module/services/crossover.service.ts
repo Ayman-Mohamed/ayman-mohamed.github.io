@@ -16,10 +16,10 @@ export class CrossOverService {
     }
 
     public getChild(first: Chromosome, second: Chromosome): Chromosome {
-        return this.getChildByLookingForward(first, second);
+        return this.getChildByLookingAround(first, second);
     }
 
-    private getChildByLookingForward(x: Chromosome, y: Chromosome): Chromosome {
+    private getChildByLookingAround(x: Chromosome, y: Chromosome): Chromosome {
         let count = x.length;
         let xlist = new LinkedListService();
         let ylist = new LinkedListService();
@@ -41,6 +41,9 @@ export class CrossOverService {
         chr.add(new Gene(c));
         var n = count;
         while (n > 1) {
+            let bx = xlist.prev(c);
+            let by = ylist.prev(c);
+
             let fx = xlist.next(c);
             let fy = ylist.next(c);
 
@@ -49,14 +52,24 @@ export class CrossOverService {
 
             n--;
 
+            var dbx = this.distance.distanceByIndex(c, bx);
+            var dby = this.distance.distanceByIndex(c, by);
             var dfx = this.distance.distanceByIndex(c, fx);
             var dfy = this.distance.distanceByIndex(c, fy);
 
-            c = dfx < dfy ? fx : fy;
+            if (dbx > dby) {
+                dbx = dby;
+                bx = by;
+            }
+            if (dfx > dfy) {
+                dfx = dfy;
+                fx = fy;
+            }
+
+            c = dbx < dfx ? bx : fx;
             chr.add(new Gene(c));
         }
 
         return chr;
     }
-
 }

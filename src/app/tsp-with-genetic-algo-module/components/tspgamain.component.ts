@@ -44,14 +44,11 @@ export class TSPGAMainComponent implements AfterViewInit {
         private roulette: RouletteService,
         private util: UtilityService
     ) {
-
         title.setTitle("TSP With Genetic Algorithm");
-
     }
 
     ngAfterViewInit() {
         this.canvas.clear();
-
         this.start();
     }
 
@@ -66,7 +63,6 @@ export class TSPGAMainComponent implements AfterViewInit {
                 if (n--) k();
             }, 1);
         }
-
         k();
     }
 
