@@ -6,8 +6,8 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "app",
-      "deployUrl" : "app/",
+      "outDir": "publish",
+      "deployUrl" : "publish/",
       "assets": [
         "assets",
         "favicon.ico"

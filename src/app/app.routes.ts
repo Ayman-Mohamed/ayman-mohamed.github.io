@@ -1,12 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home.component';
 
 export const appRoutes: Routes = [
 
     {
         path: '',
-        component: AppComponent
+        component: HomeComponent
     },
     {
         path: 'tsp-ga',

@@ -15,18 +15,29 @@ import { CrossOverService } from '../services/crossover.service';
 
 @Component({
     selector: 'tsp-ga',
-    templateUrl: 'tspgamain.component.html'
+    templateUrl: 'tspgamain.component.html',
+    styles: [
+        `
+        input[type='number'] {
+            max-width: 80px;
+        }
+        `
+    ]
 })
 export class TSPGAMainComponent implements AfterViewInit {
     @ViewChild(EnhancedCanvasComponent) canvas: EnhancedCanvasComponent;
 
     cities: City[];
     population: Population;
-    width: number = 700;
-    height: number = 500;
+    width: number = 575;
+    height: number = 575;
+
+    stopAfter: number = 200;
+    bestGeneration: number = -1;
 
     populationSize: number;
     numberOfCities: number;
+    mutationRate: number;
 
     bestGene: Chromosome;
     bestLocalGene: Chromosome;
@@ -40,7 +51,6 @@ export class TSPGAMainComponent implements AfterViewInit {
         return this.mutation.count;
     }
 
-
     constructor(private title: Title,
         private crossOver: CrossOverService,
         private rnd: RandomService,
@@ -50,10 +60,10 @@ export class TSPGAMainComponent implements AfterViewInit {
         private selection: SelectionService,
         private util: UtilityService
     ) {
-        title.setTitle("TSP With Genetic Algorithm");
+        title.setTitle("TSP with Genetic Algorithm");
         this.populationSize = TSPGAConfiguration.populationSize;
         this.numberOfCities = TSPGAConfiguration.numberOfCities;
-        this.mutation.setMutationRate(TSPGAConfiguration.mutationRate);
+        this.mutationRate = TSPGAConfiguration.mutationRate;
     }
 
     ngAfterViewInit() {
@@ -70,11 +80,10 @@ export class TSPGAMainComponent implements AfterViewInit {
             this.isRunning = true;
             this.initialize();
 
-            let n = 500;
             let k = () => {
                 this.run();
                 setTimeout(() => {
-                    if (n-- && this.isRunning) k();
+                    if (this.isRunning) k();
                     else this.isRunning = false;
                 }, 1);
             }
@@ -95,6 +104,9 @@ export class TSPGAMainComponent implements AfterViewInit {
         this.currentGeneration = 0;
         this.lastFitnessCount = 0;
         this.mutation.count = 0;
+        this.bestGeneration = -1;
+
+        this.mutation.setMutationRate(this.mutationRate);
 
         this.cities = [];
         let order = [];
@@ -112,7 +124,6 @@ export class TSPGAMainComponent implements AfterViewInit {
             chromosome.genes = this.util.shuffleArray(order.map(x => new Gene(x)));
             this.population.push(chromosome);
         }
-
     }
 
     runGeneration() {
@@ -144,13 +155,11 @@ export class TSPGAMainComponent implements AfterViewInit {
     }
 
     calculateFitness() {
-
         this.population.chromosomes.map(ch => {
             ch.fitness = this.fitness.calculateFitness(ch);
         });
 
-        this.population.chromosomes.sort();
-
+        this.population.sort();
         this.population.takeTop(this.populationSize);
 
         this.bestLocalGene = this.population.top;
@@ -165,12 +174,15 @@ export class TSPGAMainComponent implements AfterViewInit {
         if (this.bestFitness < this.bestLocalFitness) {
             this.bestFitness = this.bestLocalFitness;
             this.bestGene = this.bestLocalGene;
-            // console.log('new best at gen ' + this.currentGeneration + '. f = ' + this.bestFitness);
-            // write('log', 'Best at generation ' + currentGen);
+            this.bestGeneration = this.currentGeneration;
             this.canvas.draw(this.cities, this.bestGene.genes.map(x => x.value));
             this.lastFitnessCount = 1;
         } else {
             this.lastFitnessCount++;
+
+            if (this.lastFitnessCount >= this.stopAfter) {
+                this.isRunning = false;
+            }
         }
     }
 }
